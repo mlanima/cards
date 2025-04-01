@@ -1,0 +1,35 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: cards
+  datasource:
+    url:  jdbc:postgresql://localhost:5432/cards
+    username: cards
+    password: cardssecret
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+  jackson:
+    deserialization:
+      fail-on-unknown-properties : true
+  hateoas:
+    use-hal-as-default-json-media-type: false
+
+
+app:
+  jwt:
+    issuer: cardsissuer
+    secret: cardsecret
+    expiration: 3600000
+
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+        http:
+          converter:
+            json: DEBUG

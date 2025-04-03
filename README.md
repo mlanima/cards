@@ -31,9 +31,18 @@ This is a Java Spring Boot API for creating card-based dictionaries (decks) to h
 - `DELETE /decks/{deckId}/cards/{cardId}` - Remove a card from a deck
 
 ### Groups
-- `POST /group` - Create a new group
-- `GET /group` - Retrieve all groups
-- `GET /group/{groupId}/decks` - Retrieve decks associated with a group
+- `POST /groups` - Create a new group
+- `GET /groups` - Retrieve all groups
+- `GET /groups/{groupId}` - Retrieve group with Id
+- `PUT /groups/{groupId}` - Update group name
+- `DELETE /groups/{groupId}` - Delete group with Id
+
+### Realtive routes to decks in group
+- `GET /groups/{groupId}/decks` - Retrieve decks associated with a group
+- `POST /groups/{groupId}/decks` - Create a new deck in group
+- `GET /groups/{groupId}/decks/{deckId}` - Retrieve a specific deck in group
+- `PUT /groups/{groupId}/decks/{deckId}` - Update deck information in group
+- `DELETE /groups/{groupId}/decks/{deckId}` - Delete a deck in group
 
 ### AI-Powered Cards
 - `PUT /ai/decks/cards` - Generate cards using AI

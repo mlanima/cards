@@ -1,7 +1,7 @@
 # Cards-Based Dictionary API
 
 ## Overview
-This is a Java Spring Boot API for creating card-based dictionaries (decks) to help users learn languages efficiently. The API supports user authentication, deck management, AI-generated cards, and group-based learning.
+This is a Java Spring Boot API for creating card-based dictionaries (decks) to help users learn languages efficiently. The API supports user authentication, deck management, AI-generated cards.
 
 ## Features
 - User authentication and token management

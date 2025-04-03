@@ -4,9 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class CardDTO {
+public class AiCardsGenerationRequest {
     @NotBlank
-    private String phrase;
-    @NotBlank
-    private String translation;
+    private String input;
 }

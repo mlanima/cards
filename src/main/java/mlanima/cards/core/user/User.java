@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import mlanima.cards.core.deck.Deck;
 import mlanima.cards.core.group.Group;
+import mlanima.cards.security.UserPrincipal;
 import org.hibernate.annotations.NaturalId;
 
 import java.util.List;
@@ -47,4 +48,5 @@ public class User {
         this.email = email;
         this.password = password;
     }
+
 }

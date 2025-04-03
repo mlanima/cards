@@ -1,7 +1,5 @@
-package mlanima.cards.dtos;
+package mlanima.cards.dtos.responses;
 
-import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data

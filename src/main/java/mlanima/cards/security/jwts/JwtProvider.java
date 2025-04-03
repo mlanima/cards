@@ -1,5 +1,6 @@
 package mlanima.cards.security.jwts;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import lombok.Getter;

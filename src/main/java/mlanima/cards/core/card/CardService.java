@@ -2,57 +2,81 @@ package mlanima.cards.core.card;
 
 import mlanima.cards.core.deck.Deck;
 import mlanima.cards.core.deck.DeckRepository;
-import mlanima.cards.dtos.requests.CardDTO;
+import mlanima.cards.core.deck.DeckService;
+import mlanima.cards.core.user.UserService;
+import mlanima.cards.dtos.CardDTO;
 import mlanima.cards.exceptions.observed.CardNotFoundException;
 import mlanima.cards.exceptions.observed.DeckNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class CardService {
 
     private final CardRepository cardRepository;
-    private final DeckRepository deckRepository;
+    private final DeckService deckService;
+    private final UserService userService;
 
     @Autowired
-    public CardService(CardRepository cardRepository, DeckRepository deckRepository) {
+    public CardService(CardRepository cardRepository, DeckService deckService, UserService userService) {
         this.cardRepository = cardRepository;
-        this.deckRepository = deckRepository;
+        this.deckService = deckService;
+        this.userService = userService;
     }
 
     public List<Card> getCardsByDeck(Long deckId) {
-        return cardRepository.findByDeckId(deckId);
+        return cardRepository.findByUserIdAndDeckId(
+                userService.getUser().getId(),
+                deckId
+        );
     }
 
-    public Card addCard(Long deckId, Card card) {
-        Deck deck = deckRepository.findById(deckId).orElseThrow(DeckNotFoundException::new);
-        card.setDeck(deck);
-        return cardRepository.save(card);
+    public Card getCardByDeckAndId(Long deckId, Long cardId) {
+        return cardRepository.findByUserIdAndDeckIdAndId(
+                userService.getUser().getId(),
+                deckId,
+                cardId
+        ).orElseThrow(CardNotFoundException::new);
+    }
 
+    public Card createCard(Long deckId, CardDTO dto) {
+        Deck deck = deckService.getDeckById(deckId);
+
+        Card card = new Card();
+
+        card.setDeck(deck);
+        card.setPhrase(dto.getPhrase());
+        card.setTranslation(dto.getTranslation());
+        card.setDeck(deck);
+
+        return cardRepository.save(card);
 
     }
 
     public void deleteCard(Long deckId, Long cardId) {
-        Card card = cardRepository.findById(cardId).orElseThrow(CardNotFoundException::new);
-        if (!card.getDeck().getId().equals(deckId)) {
-            throw new CardNotFoundException();
-        }
+        Card card = getCardByDeckAndId(cardId, deckId);
 
         cardRepository.deleteById(cardId);
     }
 
-    public Card updateUserCard(Long deckId,Long cardId, CardDTO card) {
-        if (!deckRepository.existsById(deckId)) {
-            throw new DeckNotFoundException();
+    public Card updateCard(Long deckId, Long cardId, CardDTO dto) {
+        Card card = getCardByDeckAndId(cardId, deckId);
+
+        if (dto.getPhrase().isEmpty()) {
+            card.setPhrase(dto.getTranslation());
         }
 
-        Card cardToUpdate = cardRepository.findById(cardId).orElseThrow(CardNotFoundException::new);
+        if (dto.getTranslation().isEmpty()) {
+            card.setTranslation(dto.getPhrase());
+        }
 
-        cardToUpdate.setPhrase(card.getPhrase());
-        cardToUpdate.setTranslation(card.getTranslation());
-        return cardRepository.save(cardToUpdate);
+        return cardRepository.save(card);
     }
 
+    public List<Card> createCards(Long deckId, List<CardDTO> dtos) {
+        return dtos.stream().map(dto -> createCard(deckId, dto)).toList();
+    }
 }

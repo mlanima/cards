@@ -1,14 +1,16 @@
 package mlanima.cards.core.deck;
 
-import mlanima.cards.dtos.requests.DeckDTO;
+import mlanima.cards.dtos.DeckDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/decks")
 public class DeckController {
 
     private final DeckService deckService;
@@ -18,40 +20,23 @@ public class DeckController {
         this.deckService = deckService;
     }
 
-    @GetMapping("/users/{userId}/decks")
-    @PreAuthorize("userId = authentication.principal.getId()")
-    public List<Deck> getDecks(@PathVariable Long userId) {
-        return deckService.findDecksByUser(userId);
+    @GetMapping
+    public List<Deck> getDecks() {
+        return deckService.getDecks();
     }
 
-    @GetMapping("/users/{userId}/decks/{deckId}")
-    @PreAuthorize("userId = authentication.principal.getId()")
-    public Deck getDeck(@PathVariable Long userId, @PathVariable Long deckId) {
-        return deckService.findDeck(userId, deckId);
+    @PostMapping
+    public Deck createDeck(@RequestBody DeckDTO deckDTO) {
+        return deckService.createDeck(deckDTO);
     }
 
-
-    @PostMapping("/users/{userId}/decks")
-    @PreAuthorize("userId = authentication.principal.getId()")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Deck addDeck(@PathVariable Long userId, @RequestBody DeckDTO deck) {
-        return deckService.addDeckAtUser(userId, deck);
+    @DeleteMapping("/{deckId}")
+    public void deleteDeck(@PathVariable Long deckId) {
+        deckService.deleteDeck(deckId);
     }
 
-
-    @DeleteMapping("/users/{userId}/decks/{deckId}")
-    @PreAuthorize("userId = authentication.principal.getId()")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteDeck(@PathVariable Long userId, @PathVariable Long deckId) {
-        deckService.deleteDeckAtUser(deckId);
+    @PutMapping("/{deckId}")
+    public Deck updateDeck(@PathVariable Long deckId, @RequestBody DeckDTO deckDTO) {
+        return null;
     }
-
-    @PutMapping("/users/{userId}/decks/{deckId}")
-    @PreAuthorize("userId = authentication.principal.getId()")
-    public Deck updateDeck(@PathVariable Long userId, @PathVariable Long deckId, @RequestBody DeckDTO deck) {
-        return deckService.updateDeck(deckId, deck);
-    }
-
-
-
 }

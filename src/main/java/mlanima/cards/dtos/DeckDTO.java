@@ -1,4 +1,4 @@
-package mlanima.cards.dtos.requests;
+package mlanima.cards.dtos;
 
 import lombok.Data;
 

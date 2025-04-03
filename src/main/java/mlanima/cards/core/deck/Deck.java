@@ -12,6 +12,7 @@ import mlanima.cards.core.user.User;
 @Data
 @NoArgsConstructor
 public class Deck {
+
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,13 +37,4 @@ public class Deck {
         this.name = name;
         this.user = user;
     }
-
-//    public Deck(String name) {
-//        this.name = name;
-//    }
-//
-//    public static Deck build(DeckDTO dto) {
-//        return new Deck(dto.getName());
-//    }
-//
 }

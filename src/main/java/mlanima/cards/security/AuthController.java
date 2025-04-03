@@ -35,6 +35,17 @@ public class AuthController {
                 .build();
     }
 
+    @GetMapping("/token")
+    public ResponseEntity<?> refresh() {
+
+        return ResponseEntity.ok()
+                .header(
+                        "Authorization",
+                        "Bearer " + authService.refreshToken()
+                )
+                .build();
+    }
+
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
     public User register(@Valid @RequestBody RegisterRequest registerRequest) {

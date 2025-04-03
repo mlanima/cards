@@ -59,5 +59,11 @@ public class AuthService {
         return userRepository.save(userToRegister);
     }
 
+    public String refreshToken() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        return jwtProvider.generateToken(authentication);
+    }
+
 
 }

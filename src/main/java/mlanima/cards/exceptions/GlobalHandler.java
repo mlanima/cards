@@ -1,13 +1,11 @@
 package mlanima.cards.exceptions;
 
-import mlanima.cards.dtos.ExceptionResponse;
+import mlanima.cards.dtos.responses.ExceptionResponse;
 import mlanima.cards.exceptions.observed.ObservedException;
 import org.apache.coyote.BadRequestException;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -39,14 +37,6 @@ public class GlobalHandler {
                 new ExceptionResponse(exception.getMessage())
         );
     }
-
-//    @ExceptionHandler(MethodArgumentNotValidException.class)
-//    public ResponseEntity<ExceptionResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-//                new ExceptionResponse(exception.getMessage())
-//        );
-//    }
-
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ExceptionResponse> handleUnknownJsonField(HttpMessageNotReadableException ex) {

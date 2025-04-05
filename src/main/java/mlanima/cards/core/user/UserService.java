@@ -1,6 +1,6 @@
 package mlanima.cards.core.user;
 
-import mlanima.cards.dtos.UserDTO;
+import mlanima.cards.dtos.requests.UserRequest;
 import mlanima.cards.exceptions.observed.IncorrectPasswordException;
 import mlanima.cards.exceptions.observed.UserNotFoundException;
 import mlanima.cards.security.UserPrincipal;
@@ -30,7 +30,7 @@ public class UserService {
         userRepository.deleteById(getUser().getId());
     }
 
-    public User updateUser(UserDTO dto) {
+    public User updateUser(UserRequest dto) {
         User userToUpdate = userRepository.findById(getUser().getId()).orElseThrow(
                 UserNotFoundException::new
         );

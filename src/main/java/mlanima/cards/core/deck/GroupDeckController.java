@@ -1,7 +1,7 @@
 package mlanima.cards.core.deck;
 
 
-import mlanima.cards.dtos.DeckDTO;
+import mlanima.cards.dtos.requests.DeckRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +29,7 @@ public class GroupDeckController {
     }
 
     @PostMapping
-    public Deck createDeck(@PathVariable Long groupId, @RequestBody DeckDTO dto) {
+    public Deck createDeck(@PathVariable Long groupId, @RequestBody DeckRequest dto) {
         return groupDeckService.createDeckInGroup(groupId, dto);
     }
 
@@ -39,7 +39,7 @@ public class GroupDeckController {
     }
 
     @PutMapping("{deckId}")
-    public Deck updateDeck(@PathVariable Long groupId,@PathVariable Long deckId, @RequestBody DeckDTO dto) {
+    public Deck updateDeck(@PathVariable Long groupId,@PathVariable Long deckId, @RequestBody DeckRequest dto) {
         return groupDeckService.updateDeckInGroup(groupId, deckId, dto);
     }
 }

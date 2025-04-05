@@ -1,7 +1,7 @@
 package mlanima.cards.core.group;
 
 import mlanima.cards.core.user.UserService;
-import mlanima.cards.dtos.GroupDTO;
+import mlanima.cards.dtos.requests.GroupRequest;
 import mlanima.cards.exceptions.observed.GroupNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,7 @@ public class GroupService {
                 .orElseThrow(GroupNotFoundException::new);
     }
 
-    public Group createGroup(GroupDTO dto) {
+    public Group createGroup(GroupRequest dto) {
         Group group = new Group();
         group.setName(dto.getName());
         group.setUser(userService.getUser());
@@ -42,7 +42,7 @@ public class GroupService {
         return groupRepository.save(group);
     }
 
-    public Group updateGroup(Long groupId, GroupDTO dto) {
+    public Group updateGroup(Long groupId, GroupRequest dto) {
         Group group = groupRepository.findById(groupId).orElseThrow(GroupNotFoundException::new);
         group.setName(dto.getName());
         return groupRepository.save(group);

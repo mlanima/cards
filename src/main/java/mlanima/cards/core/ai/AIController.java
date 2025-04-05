@@ -2,9 +2,14 @@ package mlanima.cards.core.ai;
 
 import mlanima.cards.core.card.Card;
 import mlanima.cards.dtos.requests.AiCardsGenerationRequest;
+import mlanima.cards.dtos.responses.CardResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -19,7 +24,18 @@ public class AIController {
     }
 
     @PutMapping("/decks/{deckId}/cards")
-    public List<Card> generateCards(@PathVariable Long deckId, @RequestBody AiCardsGenerationRequest input) {
-        return aiService.generateCardsFromPrompt(deckId, input);
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<List<CardResponse>>  generateCards(@PathVariable Long deckId, @RequestBody AiCardsGenerationRequest input) {
+        List<CardResponse> responseList = aiService.generateCardsFromPrompt(deckId, input).stream()
+                .map(CardResponse::build)
+                .toList();
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentContextPath() // excludes controller's @RequestMapping prefix
+                .path("/decks/{deckId}/cards")
+                .buildAndExpand(deckId)
+                .toUri();
+
+        return ResponseEntity.created(location).body(responseList);
     }
 }

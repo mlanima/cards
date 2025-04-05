@@ -2,9 +2,8 @@ package mlanima.cards.core.deck;
 
 import mlanima.cards.core.group.Group;
 import mlanima.cards.core.group.GroupService;
-import mlanima.cards.core.user.UserRepository;
 import mlanima.cards.core.user.UserService;
-import mlanima.cards.dtos.DeckDTO;
+import mlanima.cards.dtos.requests.DeckRequest;
 import mlanima.cards.exceptions.observed.DeckNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,7 +45,7 @@ public class GroupDeckService {
         this.deckRepository.delete(deck);
     }
 
-    public Deck createDeckInGroup(Long groupId, DeckDTO dto) {
+    public Deck createDeckInGroup(Long groupId, DeckRequest dto) {
         Group group = groupService.getGroup(groupId);
 
         Deck deck = new Deck();
@@ -57,7 +56,7 @@ public class GroupDeckService {
         return this.deckRepository.save(deck);
     }
 
-    public Deck updateDeckInGroup(Long groupId, Long deckId, DeckDTO dto) {
+    public Deck updateDeckInGroup(Long groupId, Long deckId, DeckRequest dto) {
         Deck deck = getDeckByGroupAndId(groupId, deckId);
         deck.setName(dto.getName());
 

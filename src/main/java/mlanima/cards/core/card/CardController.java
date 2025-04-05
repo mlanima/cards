@@ -1,10 +1,15 @@
 package mlanima.cards.core.card;
 
-import mlanima.cards.dtos.CardDTO;
+import mlanima.cards.dtos.requests.CardRequest;
+import mlanima.cards.dtos.responses.CardResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -19,28 +24,38 @@ public class CardController {
     }
 
     @GetMapping
-    public List<Card> getCardsInDeck(@PathVariable Long deckId) {
-        return cardService.getCardsByDeck(deckId);
+    public List<CardResponse> getCardsInDeck(@PathVariable Long deckId) {
+        return cardService.getCardsByDeck(deckId).stream().map(CardResponse::build).toList();
+
     }
 
     @GetMapping("/{cardId}")
-    public Card getCardInDeck(@PathVariable Long deckId, @PathVariable Long cardId) {
-        return cardService.getCardByDeckAndId(deckId, cardId);
+    public CardResponse getCardInDeck(@PathVariable Long deckId, @PathVariable Long cardId) {
+        return CardResponse.build(cardService.getCardByDeckAndId(deckId, cardId));
     }
 
     @DeleteMapping("/{cardId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCardInDeck(@PathVariable Long deckId, @PathVariable Long cardId) {
         cardService.deleteCard(deckId, cardId);
     }
 
     @PostMapping
-    public Card createCardInDeck(@PathVariable Long deckId, @RequestBody CardDTO cardDTO) {
-        return cardService.createCard(deckId, cardDTO);
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<CardResponse> createCardInDeck(@PathVariable Long deckId, @RequestBody CardRequest cardRequest) {
+        CardResponse cardResponse = CardResponse.build(cardService.createCard(deckId, cardRequest));
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(cardResponse.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).body(cardResponse);
     }
 
     @PutMapping("/{cardId}")
-    public Card updateCardInDeck(@PathVariable Long deckId,@PathVariable Long cardId, @RequestBody CardDTO cardDTO) {
-        return cardService.updateCard(deckId, cardId, cardDTO);
+    public CardResponse updateCardInDeck(@PathVariable Long deckId,@PathVariable Long cardId, @RequestBody CardRequest cardRequest) {
+        return CardResponse.build(cardService.updateCard(deckId, cardId, cardRequest));
     }
 
 

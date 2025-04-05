@@ -1,10 +1,10 @@
-package mlanima.cards.dtos;
+package mlanima.cards.dtos.requests;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class UserDTO {
+public class UserRequest {
     private String newEmail;
     private String newPassword;
     @NotBlank

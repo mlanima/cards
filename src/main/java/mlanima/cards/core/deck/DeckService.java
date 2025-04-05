@@ -1,7 +1,7 @@
 package mlanima.cards.core.deck;
 
 import mlanima.cards.core.user.UserService;
-import mlanima.cards.dtos.DeckDTO;
+import mlanima.cards.dtos.requests.DeckRequest;
 import mlanima.cards.exceptions.observed.DeckNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,9 +31,9 @@ public class DeckService {
         ).orElseThrow(DeckNotFoundException::new);
     }
 
-    public Deck createDeck(DeckDTO deckDTO) {
+    public Deck createDeck(DeckRequest deckRequest) {
         Deck deck = new Deck();
-        deck.setName(deckDTO.getName());
+        deck.setName(deckRequest.getName());
         deck.setUser(userService.getUser());
 
         return deckRepository.save(deck);

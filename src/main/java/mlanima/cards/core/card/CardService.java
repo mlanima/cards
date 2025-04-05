@@ -1,16 +1,13 @@
 package mlanima.cards.core.card;
 
 import mlanima.cards.core.deck.Deck;
-import mlanima.cards.core.deck.DeckRepository;
 import mlanima.cards.core.deck.DeckService;
 import mlanima.cards.core.user.UserService;
-import mlanima.cards.dtos.CardDTO;
+import mlanima.cards.dtos.requests.CardRequest;
 import mlanima.cards.exceptions.observed.CardNotFoundException;
-import mlanima.cards.exceptions.observed.DeckNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -42,7 +39,7 @@ public class CardService {
         ).orElseThrow(CardNotFoundException::new);
     }
 
-    public Card createCard(Long deckId, CardDTO dto) {
+    public Card createCard(Long deckId, CardRequest dto) {
         Deck deck = deckService.getDeckById(deckId);
 
         Card card = new Card();
@@ -62,7 +59,7 @@ public class CardService {
         cardRepository.deleteById(cardId);
     }
 
-    public Card updateCard(Long deckId, Long cardId, CardDTO dto) {
+    public Card updateCard(Long deckId, Long cardId, CardRequest dto) {
         Card card = getCardByDeckAndId(cardId, deckId);
 
         if (dto.getPhrase().isEmpty()) {
@@ -76,7 +73,7 @@ public class CardService {
         return cardRepository.save(card);
     }
 
-    public List<Card> createCards(Long deckId, List<CardDTO> dtos) {
+    public List<Card> createCards(Long deckId, List<CardRequest> dtos) {
         return dtos.stream().map(dto -> createCard(deckId, dto)).toList();
     }
 }

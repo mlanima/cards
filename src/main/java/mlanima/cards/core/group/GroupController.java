@@ -1,6 +1,6 @@
 package mlanima.cards.core.group;
 
-import mlanima.cards.dtos.GroupDTO;
+import mlanima.cards.dtos.requests.GroupRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,12 +26,12 @@ public class GroupController {
     }
 
     @PostMapping
-    public Group createGroup(@RequestBody GroupDTO group) {
+    public Group createGroup(@RequestBody GroupRequest group) {
         return groupService.createGroup(group);
     }
 
     @PutMapping("/{groupId}")
-    public Group updateGroup(@PathVariable Long groupId,@RequestBody GroupDTO group) {
+    public Group updateGroup(@PathVariable Long groupId,@RequestBody GroupRequest group) {
         return groupService.updateGroup(groupId, group);
     }
 

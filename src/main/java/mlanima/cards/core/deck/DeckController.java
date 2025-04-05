@@ -1,10 +1,7 @@
 package mlanima.cards.core.deck;
 
-import mlanima.cards.dtos.DeckDTO;
+import mlanima.cards.dtos.requests.DeckRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,8 +23,8 @@ public class DeckController {
     }
 
     @PostMapping
-    public Deck createDeck(@RequestBody DeckDTO deckDTO) {
-        return deckService.createDeck(deckDTO);
+    public Deck createDeck(@RequestBody DeckRequest deckRequest) {
+        return deckService.createDeck(deckRequest);
     }
 
     @DeleteMapping("/{deckId}")
@@ -36,7 +33,7 @@ public class DeckController {
     }
 
     @PutMapping("/{deckId}")
-    public Deck updateDeck(@PathVariable Long deckId, @RequestBody DeckDTO deckDTO) {
+    public Deck updateDeck(@PathVariable Long deckId, @RequestBody DeckRequest deckRequest) {
         return null;
     }
 }

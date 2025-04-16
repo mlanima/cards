@@ -3,6 +3,6 @@ package mlanima.cards.dtos.requests;
 import lombok.Data;
 
 @Data
-public class GroupRequest {
+public class TagRequest {
     private String name;
 }

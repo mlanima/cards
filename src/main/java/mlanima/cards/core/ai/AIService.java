@@ -25,7 +25,7 @@ public class AIService {
         this.cardService = cardService;
     }
 
-    public List<Card> generateCardsFromPrompt(Long deckId, AiCardsGenerationRequest input) {
+    public List<Card> generateCardsFromPrompt(String deckName, AiCardsGenerationRequest input) {
         ChatResponse response = this.client.prompt(
                 new Prompt(List.of(
                         PromptMessages.generateCardsMesssage,
@@ -38,7 +38,7 @@ public class AIService {
 
         List<CardRequest> cards= ChatResponseConverter.convertToCardDTOList(response.getResult().getOutput().getText());
 
-        return cardService.createCards(deckId, cards);
+        return cardService.createCards(deckName, cards);
     }
 
 }

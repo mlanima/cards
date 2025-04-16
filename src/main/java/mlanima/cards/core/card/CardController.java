@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/decks/{deckId}/cards")
+@RequestMapping("/decks/{deckName}/cards")
 public class CardController {
 
     private final CardService cardService;
@@ -24,26 +24,26 @@ public class CardController {
     }
 
     @GetMapping
-    public List<CardResponse> getCardsInDeck(@PathVariable Long deckId) {
-        return cardService.getCardsByDeck(deckId).stream().map(CardResponse::build).toList();
+    public List<CardResponse> getCardsInDeck(@PathVariable String deckName) {
+        return cardService.getCardsByDeck(deckName).stream().map(CardResponse::build).toList();
 
     }
 
     @GetMapping("/{cardId}")
-    public CardResponse getCardInDeck(@PathVariable Long deckId, @PathVariable Long cardId) {
-        return CardResponse.build(cardService.getCardByDeckAndId(deckId, cardId));
+    public CardResponse getCardInDeck(@PathVariable String deckName, @PathVariable Long cardId) {
+        return CardResponse.build(cardService.getCardByDeckAndId(deckName, cardId));
     }
 
     @DeleteMapping("/{cardId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteCardInDeck(@PathVariable Long deckId, @PathVariable Long cardId) {
-        cardService.deleteCard(deckId, cardId);
+    public void deleteCardInDeck(@PathVariable String deckName, @PathVariable Long cardId) {
+        cardService.deleteCard(deckName, cardId);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<CardResponse> createCardInDeck(@PathVariable Long deckId, @RequestBody CardRequest cardRequest) {
-        CardResponse cardResponse = CardResponse.build(cardService.createCard(deckId, cardRequest));
+    public ResponseEntity<CardResponse> createCardInDeck(@PathVariable String deckName, @RequestBody CardRequest cardRequest) {
+        CardResponse cardResponse = CardResponse.build(cardService.createCard(deckName, cardRequest));
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
@@ -54,8 +54,8 @@ public class CardController {
     }
 
     @PutMapping("/{cardId}")
-    public CardResponse updateCardInDeck(@PathVariable Long deckId,@PathVariable Long cardId, @RequestBody CardRequest cardRequest) {
-        return CardResponse.build(cardService.updateCard(deckId, cardId, cardRequest));
+    public CardResponse updateCardInDeck(@PathVariable String deckName,@PathVariable Long cardId, @RequestBody CardRequest cardRequest) {
+        return CardResponse.build(cardService.updateCard(deckName, cardId, cardRequest));
     }
 
 

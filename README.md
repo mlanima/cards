@@ -31,18 +31,18 @@ This is a Java Spring Boot API for creating card-based dictionaries (decks) to h
 - `DELETE /decks/{deckId}/cards/{cardId}` - Remove a card from a deck
 
 ### Groups
-- `POST /groups` - Create a new group
+- `POST /groups` - Create a new tag
 - `GET /groups` - Retrieve all groups
-- `GET /groups/{groupId}` - Retrieve group with Id
-- `PUT /groups/{groupId}` - Update group name
-- `DELETE /groups/{groupId}` - Delete group with Id
+- `GET /groups/{groupId}` - Retrieve tag with Id
+- `PUT /groups/{groupId}` - Update tag name
+- `DELETE /groups/{groupId}` - Delete tag with Id
 
-### Realtive routes to decks in group
-- `GET /groups/{groupId}/decks` - Retrieve decks associated with a group
-- `POST /groups/{groupId}/decks` - Create a new deck in group
-- `GET /groups/{groupId}/decks/{deckId}` - Retrieve a specific deck in group
-- `PUT /groups/{groupId}/decks/{deckId}` - Update deck information in group
-- `DELETE /groups/{groupId}/decks/{deckId}` - Delete a deck in group
+### Realtive routes to decks in tag
+- `GET /groups/{groupId}/decks` - Retrieve decks associated with a tag
+- `POST /groups/{groupId}/decks` - Create a new deck in tag
+- `GET /groups/{groupId}/decks/{deckId}` - Retrieve a specific deck in tag
+- `PUT /groups/{groupId}/decks/{deckId}` - Update deck information in tag
+- `DELETE /groups/{groupId}/decks/{deckId}` - Delete a deck in tag
 
 ### AI-Powered Cards
 - `PUT /ai/decks/cards` - Generate cards using AI

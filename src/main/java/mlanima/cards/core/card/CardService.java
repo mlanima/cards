@@ -24,23 +24,23 @@ public class CardService {
         this.userService = userService;
     }
 
-    public List<Card> getCardsByDeck(Long deckId) {
-        return cardRepository.findByUserIdAndDeckId(
+    public List<Card> getCardsByDeck(String deckName) {
+        return cardRepository.findByUserIdAndDeckName(
                 userService.getUser().getId(),
-                deckId
+                deckName
         );
     }
 
-    public Card getCardByDeckAndId(Long deckId, Long cardId) {
-        return cardRepository.findByUserIdAndDeckIdAndId(
+    public Card getCardByDeckAndId(String deckName, Long cardId) {
+        return cardRepository.findByUserIdAndDeckNameAndId(
                 userService.getUser().getId(),
-                deckId,
+                deckName,
                 cardId
         ).orElseThrow(CardNotFoundException::new);
     }
 
-    public Card createCard(Long deckId, CardRequest dto) {
-        Deck deck = deckService.getDeckById(deckId);
+    public Card createCard(String deckName, CardRequest dto) {
+        Deck deck = deckService.getDeckByName(deckName);
 
         Card card = new Card();
 
@@ -53,14 +53,14 @@ public class CardService {
 
     }
 
-    public void deleteCard(Long deckId, Long cardId) {
-        Card card = getCardByDeckAndId(cardId, deckId);
+    public void deleteCard(String deckName, Long cardId) {
+        Card card = getCardByDeckAndId(deckName, cardId);
 
         cardRepository.deleteById(cardId);
     }
 
-    public Card updateCard(Long deckId, Long cardId, CardRequest dto) {
-        Card card = getCardByDeckAndId(cardId, deckId);
+    public Card updateCard(String deckName, Long cardId, CardRequest dto) {
+        Card card = getCardByDeckAndId(deckName, cardId);
 
         if (dto.getPhrase().isEmpty()) {
             card.setPhrase(dto.getTranslation());
@@ -73,7 +73,7 @@ public class CardService {
         return cardRepository.save(card);
     }
 
-    public List<Card> createCards(Long deckId, List<CardRequest> dtos) {
-        return dtos.stream().map(dto -> createCard(deckId, dto)).toList();
+    public List<Card> createCards(String deckName, List<CardRequest> dtos) {
+        return dtos.stream().map(dto -> createCard(deckName, dto)).toList();
     }
 }

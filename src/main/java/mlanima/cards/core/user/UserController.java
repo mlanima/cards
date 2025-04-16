@@ -2,6 +2,7 @@ package mlanima.cards.core.user;
 
 import jakarta.validation.Valid;
 import mlanima.cards.dtos.requests.UserRequest;
+import mlanima.cards.dtos.responses.UserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,13 +19,13 @@ public class UserController {
     }
 
     @GetMapping
-    public User getUser() {
-        return userService.getUser();
+    public UserResponse getUser() {
+        return UserResponse.build(userService.getUser()) ;
     }
 
     @PutMapping
-    public User updateUser(@Valid @RequestBody UserRequest user) {
-        return userService.updateUser(user);
+    public UserResponse updateUser(@Valid @RequestBody UserRequest user) {
+        return UserResponse.build(userService.updateUser(user)) ;
     }
 
     @DeleteMapping

@@ -4,10 +4,20 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import mlanima.cards.core.group.Group;
+import mlanima.cards.core.tag.Tag;
 import mlanima.cards.core.user.User;
 
-@Table( name = "decks")
+import java.util.List;
+
+@Table(
+        name = "decks",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {
+                        "user_id",
+                        "name"
+                })
+        }
+)
 @Entity
 @Data
 @NoArgsConstructor
@@ -25,13 +35,13 @@ public class Deck {
     @JoinColumn( name = "user_id", nullable = false )
     User user;
 
-    @ManyToOne
     @JoinTable(
-            name = "group_decks",
+            name = "tag_decks",
             joinColumns = @JoinColumn( name = "deck_id"),
-            inverseJoinColumns = @JoinColumn( name = "shelf_id")
+            inverseJoinColumns = @JoinColumn( name = "tag_id")
     )
-    Group group;
+    @ManyToMany
+    List<Tag> tags;
 
     public Deck(String name, User user) {
         this.name = name;

@@ -1,9 +1,14 @@
 package mlanima.cards.core.deck;
 
 import mlanima.cards.dtos.requests.DeckRequest;
+import mlanima.cards.dtos.responses.DeckResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -18,22 +23,30 @@ public class DeckController {
     }
 
     @GetMapping
-    public List<Deck> getDecks() {
-        return deckService.getDecks();
+    public List<DeckResponse> getDecks() {
+        return deckService.getDecks().stream().map(DeckResponse::build).toList();
     }
 
     @PostMapping
-    public Deck createDeck(@RequestBody DeckRequest deckRequest) {
-        return deckService.createDeck(deckRequest);
+    public ResponseEntity<DeckResponse> createDeck(@RequestBody DeckRequest deckRequest) {
+        DeckResponse response = DeckResponse.build(deckService.createDeck(deckRequest));
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{deckName}")
+                .buildAndExpand(response.getName())
+                .toUri();
+
+        return ResponseEntity.created(location).body(response);
     }
 
-    @DeleteMapping("/{deckId}")
-    public void deleteDeck(@PathVariable Long deckId) {
-        deckService.deleteDeck(deckId);
+    @DeleteMapping("/{deckName}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteDeck(@PathVariable String deckName) {
+        deckService.deleteDeck(deckName);
     }
 
-    @PutMapping("/{deckId}")
-    public Deck updateDeck(@PathVariable Long deckId, @RequestBody DeckRequest deckRequest) {
-        return null;
+    @PutMapping("/{deckName}")
+    public DeckResponse updateDeck(@PathVariable String deckName, @RequestBody DeckRequest deckRequest) {
+        return DeckResponse.build(deckService.updateDeck(deckName, deckRequest)) ;
     }
 }

@@ -24,10 +24,10 @@ public class DeckService {
         return deckRepository.findByUserId(userService.getUser().getId());
     }
 
-    public Deck getDeckByName(String deckName) {
-        return deckRepository.findByUserIdAndName(
+    public Deck getDeckById(Long id) {
+        return deckRepository.findByUserIdAndId(
                 userService.getUser().getId(),
-                deckName
+                id
         ).orElseThrow(DeckNotFoundException::new);
     }
 
@@ -39,22 +39,21 @@ public class DeckService {
         return deckRepository.save(deck);
     }
 
-    public void deleteDeck(String deckName) {
-        Deck deck = deckRepository.findByUserIdAndName(
+    public void deleteDeck(Long id) {
+        Deck deck = deckRepository.findByUserIdAndId(
                 userService.getUser().getId(),
-                deckName
+                id
         ).orElseThrow(DeckNotFoundException::new);
 
         deckRepository.delete(deck);
     }
 
-    public Deck updateDeck(String deckName, DeckRequest d) {
-        Deck deck = deckRepository.findByUserIdAndName(userService.getUser().getId(), deckName)
+    public Deck updateDeck(Long id, DeckRequest d) {
+        Deck deck = deckRepository.findByUserIdAndId(userService.getUser().getId(), id)
                 .orElseThrow(DeckNotFoundException::new);
 
         deck.setName(d.getName());
 
         return deckRepository.save(deck);
     }
-
 }

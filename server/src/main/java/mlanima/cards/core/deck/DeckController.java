@@ -41,12 +41,12 @@ public class DeckController {
 
     @DeleteMapping("/{deckName}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteDeck(@PathVariable String deckName) {
+    public void deleteDeck(@PathVariable Long deckName) {
         deckService.deleteDeck(deckName);
     }
 
     @PutMapping("/{deckName}")
-    public DeckResponse updateDeck(@PathVariable String deckName, @RequestBody DeckRequest deckRequest) {
+    public DeckResponse updateDeck(@PathVariable Long deckName, @RequestBody DeckRequest deckRequest) {
         return DeckResponse.build(deckService.updateDeck(deckName, deckRequest)) ;
     }
 }

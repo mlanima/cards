@@ -24,15 +24,15 @@ public class AIController {
 
     @PutMapping("/decks/{deckId}/cards")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<List<CardResponse>>  generateCards(@PathVariable String deckName, @RequestBody AiCardsGenerationRequest input) {
-        List<CardResponse> responseList = aiService.generateCardsFromPrompt(deckName, input).stream()
+    public ResponseEntity<List<CardResponse>>  generateCards(@PathVariable Long deckId, @RequestBody AiCardsGenerationRequest input) {
+        List<CardResponse> responseList = aiService.generateCardsFromPrompt(deckId, input).stream()
                 .map(CardResponse::build)
                 .toList();
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath() // excludes controller's @RequestMapping prefix
                 .path("/decks/{deckId}/cards")
-                .buildAndExpand(deckName)
+                .buildAndExpand(deckId)
                 .toUri();
 
         return ResponseEntity.created(location).body(responseList);

@@ -7,5 +7,6 @@ import java.util.Optional;
 
 public interface DeckRepository extends JpaRepository<Deck, Long> {
     List<Deck> findByUserId(Long userId);
-    Optional<Deck> findByUserIdAndName(Long userId, String name);
+    Optional<Deck> findByUserIdAndId(Long userId, Long id);
+
 }

@@ -12,10 +12,10 @@ public interface CardRepository extends JpaRepository<Card, Long> {
     boolean findByPhrase(String phrase);
 
     @Query("SELECT c FROM Card c WHERE c.deck.user.id = :userId AND c.deck.name = :deckName")
-    List<Card> findByUserIdAndDeckName(@Param("userId") Long userId,@Param("deckName") String deckName);
+    List<Card> findByUserIdAndDeckName(@Param("userId") Long userId,@Param("deckName") Long deckName);
 
     @Query("SELECT c FROM Card c WHERE c.deck.user.id = :userId AND  c.deck.name = :deckName AND c.id = :id ")
-    Optional<Card> findByUserIdAndDeckNameAndId(@Param("userId") Long userId,@Param("deckName") String deckName,@Param("id") Long id);
+    Optional<Card> findByUserIdAndDeckNameAndId(@Param("userId") Long userId, @Param("deckName") Long deckName, @Param("id") Long id);
 
 
 }

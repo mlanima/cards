@@ -55,8 +55,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(
                                 HttpMethod.POST,
-                                "/auth/token",
-                                "/auth/users"
+                                "/auth/**",
+                                "/public/**"
                         )
                         .permitAll()
                         .anyRequest().authenticated()

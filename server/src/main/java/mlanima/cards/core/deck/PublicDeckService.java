@@ -32,11 +32,15 @@ public class PublicDeckService {
     }
 
     public List<Deck> getPublicDecks() {
-        return publicDeckRepository.findAll().stream().map(PublicDeck::getDeck).toList();
+        return publicDeckRepository.findAll()
+                .stream()
+                .map(PublicDeck::getDeck)
+                .toList();
     }
 
     public Optional<Deck> getDeck(Long deckId) {
-        return publicDeckRepository.findById(deckId).map(PublicDeck::getDeck);
+        return publicDeckRepository.findById(deckId)
+                .map(PublicDeck::getDeck);
     }
 
     public PublicDeck postDeck(PublicDeckRequest publicDeckRequest) {

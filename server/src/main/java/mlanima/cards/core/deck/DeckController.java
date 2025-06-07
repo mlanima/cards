@@ -1,7 +1,9 @@
 package mlanima.cards.core.deck;
 
+import jakarta.websocket.server.PathParam;
 import mlanima.cards.dtos.requests.DeckRequest;
 import mlanima.cards.dtos.responses.DeckResponse;
+import mlanima.cards.dtos.responses.DeckWithCardsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,11 +34,16 @@ public class DeckController {
         DeckResponse response = DeckResponse.build(deckService.createDeck(deckRequest));
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("/{deckName}")
-                .buildAndExpand(response.getName())
+                .path("/{deckId}")
+                .buildAndExpand(response.getId())
                 .toUri();
 
         return ResponseEntity.created(location).body(response);
+    }
+
+    @GetMapping("/{deckId}")
+    public DeckWithCardsResponse getDeck(@PathVariable("deckId") Long deckId) {
+        return DeckWithCardsResponse.build(deckService.getDeckById(deckId));
     }
 
     @DeleteMapping("/{deckName}")

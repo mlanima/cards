@@ -1,7 +1,7 @@
 package mlanima.cards.core.deck;
 
-import mlanima.cards.core.user.UserService;
 import mlanima.cards.dtos.requests.PublicDeckRequest;
+import mlanima.cards.dtos.responses.DeckWithCardsResponse;
 import mlanima.cards.exceptions.observed.DeckNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +25,8 @@ public class PublicDeckController {
     }
 
     @GetMapping("{id}")
-    Deck getPublicDeck(@PathVariable Long id) {
-        return publicDeckService.getDeck(id).orElseThrow(DeckNotFoundException::new);
+    DeckWithCardsResponse getPublicDeck(@PathVariable Long id) {
+        return DeckWithCardsResponse.build(publicDeckService.getDeck(id).orElseThrow(DeckNotFoundException::new));
     }
 
     @PostMapping

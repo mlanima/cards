@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import mlanima.cards.core.card.Card;
 import mlanima.cards.core.tag.Tag;
 import mlanima.cards.core.user.User;
 
@@ -42,6 +43,9 @@ public class Deck {
     )
     @ManyToMany
     List<Tag> tags;
+
+    @OneToMany
+    List<Card> cards;
 
     public Deck(String name, User user) {
         this.name = name;

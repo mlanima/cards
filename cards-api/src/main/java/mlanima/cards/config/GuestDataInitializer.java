@@ -10,13 +10,11 @@ import mlanima.cards.core.deck.PublicDeck;
 import mlanima.cards.core.deck.PublicDeckRepository;
 import mlanima.cards.core.user.User;
 import mlanima.cards.core.user.UserRepository;
-import mlanima.cards.core.user.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 @Configuration

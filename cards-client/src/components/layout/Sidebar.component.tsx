@@ -3,7 +3,7 @@ import Logo from "@/components/ui/Logo";
 import { TbCardsFilled } from "react-icons/tb";
 import { FaInfo } from "react-icons/fa";
 import Link from "next/link";
-import { Button } from "@headlessui/react";
+import Button from "@/components/ui/Button.component";
 import { IconType } from "react-icons/lib";
 
 const navItems = [
@@ -21,7 +21,7 @@ const NavItem = ({
   icon: IconType;
 }) => {
   return (
-    <li className="rounded-full text-lg mx-6 hover:bg-gray-800 px-8 py-2 width-full">
+    <li className="rounded-full text-lg mx-6 hover:bg-stone-700 px-8 py-2 width-full">
       <Link
         href={href}
         className="w-full flex justify-center items-center gap-2 text-2xl"
@@ -37,7 +37,7 @@ const NavItem = ({
 
 const Sidebar = () => {
   return (
-    <div className="group flex flex-col bg-gray-900 text-white w-28 hover:w-72 fixed min-h-full transition-all duration-300 ease-in-out">
+    <div className="group flex flex-col bg-stone-800 text-lime-50 w-28 hover:w-72 fixed min-h-full transition-all duration-300 ease-in-out">
       <Logo className=" justify-center self-center text-lg font-semibold justify-self-start p-6 m-4 w-full" />
       <nav className="justtify-self-start mt-8 w-full">
         <ul className="flex flex-col gap-12">
@@ -52,7 +52,7 @@ const Sidebar = () => {
         </ul>
       </nav>
 
-      <Button className="flex justify-center mt-auto items-center gap-2 rounded-md bg-purple-500 px-3 py-1.5 text-xl font-semibold text-white shadow-inner shadow-white/10 focus:not-data-focus:outline-none data-focus:outline data-focus:outline-white data-hover:bg-gray-600 data-open:bg-gray-700 m-4">
+      <Button className="mt-auto m-4">
         <Link href={"/login"}>Login</Link>
       </Button>
     </div>

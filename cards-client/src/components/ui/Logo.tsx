@@ -9,7 +9,7 @@ const Logo = ({ className }: LogoProps) => {
   return (
     <Link href="/" className={`${className}`}>
       <span>Cards</span>
-      <span className="text-purple-400">.io</span>
+      <span className="text-lime-400">.io</span>
     </Link>
   );
 };

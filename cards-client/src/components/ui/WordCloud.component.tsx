@@ -41,12 +41,12 @@ const WordCloud = ({
       }}
     >
       {/* Інші слова */}
-      {otherWords.map((word, index) => {
+      {otherWords.map((word) => {
         const { top, left } = generateRandomPosition();
         const fontSize = Math.random() * 14 + 10; // 10px - 24px
         return (
           <div
-            key={index}
+            key={word}
             style={{
               position: "absolute",
               top: `calc(50% + ${top}px)`,

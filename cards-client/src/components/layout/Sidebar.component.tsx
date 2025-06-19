@@ -21,10 +21,10 @@ const NavItem = ({
   icon: IconType;
 }) => {
   return (
-    <li className="rounded-full text-lg mx-6 hover:bg-gray-800 px-8 py-2">
+    <li className="rounded-full text-lg mx-6 hover:bg-gray-800 px-8 py-2 width-full">
       <Link
         href={href}
-        className="width-fit flex justify-center items-center gap-2 text-2xl"
+        className="w-full flex justify-center items-center gap-2 text-2xl"
       >
         <Icon className="flex text-3xl shrink-0" />
         <span className="w-0 opacity-0 group-hover:w-full group-hover:opacity-100 transition-all duration-300 ease-in-out">
@@ -37,9 +37,9 @@ const NavItem = ({
 
 const Sidebar = () => {
   return (
-    <div className="group flex flex-col bg-gray-900 text-white w-36 hover:w-72 fixed min-h-full transition-all duration-300 ease-in-out">
-      <Logo className="flex rounded-full justify-center self-center text-2xl font-semibold shadow-xs shadow-black border-b border-purple-400 justify-self-start p-6 m-4 w-full" />
-      <nav className="justtify-self-start mt-8">
+    <div className="group flex flex-col bg-gray-900 text-white w-28 hover:w-72 fixed min-h-full transition-all duration-300 ease-in-out">
+      <Logo className=" justify-center self-center text-lg font-semibold justify-self-start p-6 m-4 w-full" />
+      <nav className="justtify-self-start mt-8 w-full">
         <ul className="flex flex-col gap-12">
           {navItems.map((item) => (
             <NavItem
@@ -51,8 +51,9 @@ const Sidebar = () => {
           ))}
         </ul>
       </nav>
+
       <Button className="flex justify-center mt-auto items-center gap-2 rounded-md bg-purple-500 px-3 py-1.5 text-xl font-semibold text-white shadow-inner shadow-white/10 focus:not-data-focus:outline-none data-focus:outline data-focus:outline-white data-hover:bg-gray-600 data-open:bg-gray-700 m-4">
-        Login
+        <Link href={"/login"}>Login</Link>
       </Button>
     </div>
   );

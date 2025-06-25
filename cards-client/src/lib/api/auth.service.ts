@@ -4,7 +4,7 @@ export interface AuthResponse {
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8080';
 
-export async function register(email: string, password: string): Promise<void> {
+export async function register(email: string, password: string) {
   const res = await fetch(`${API_URL}/auth/users`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -43,7 +43,5 @@ export function getToken(): string | null {
 }
 
 export function removeToken() {
-  if (typeof window !== 'undefined') {
     localStorage.removeItem('token');
-  }
 } 

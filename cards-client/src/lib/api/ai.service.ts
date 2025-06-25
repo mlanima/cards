@@ -1,7 +1,7 @@
 import { getToken } from './auth.service';
 import type { Card } from './card.service';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8080';
 
 export async function generateAICards(deckId: string, prompt: string): Promise<Card[]> {
   const token = getToken();

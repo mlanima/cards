@@ -8,9 +8,17 @@ import { z } from "zod/v4";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginSchema, RegisterSchema } from "@/lib/models/auth.types";
 import Image from "next/image";
+import { login, register as reg } from "@/lib/api/auth.service";
+import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/stores/authStore";
+import { useDialogStore } from "@/stores/dialogStore";
 
 const LoginPage = () => {
+  const router = useRouter();
   const [isRegistering, setIsRegistering] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const authState = useAuthStore();
+  const { show } = useDialogStore();
 
   const schema = isRegistering ? RegisterSchema : LoginSchema;
 
@@ -22,6 +30,7 @@ const LoginPage = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
@@ -29,7 +38,33 @@ const LoginPage = () => {
     setIsRegistering((prev) => !prev);
   };
 
-  const onSubmit: SubmitHandler<FormData> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<FormData> = (data) => {
+    console.log("submiting: " + JSON.stringify(data));
+    const submit = isRegistering ? reg : login;
+
+    try {
+      submit(data.email, data.password);
+      if (!isRegistering) {
+        authState.logIn();
+        show("You're logged in!", true);
+      } else {
+        show("You've registered!", true);
+      }
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        console.log(e.message);
+      } else {
+        console.log(e);
+      }
+    }
+
+    if (isRegistering) {
+      setIsRegistering(false);
+      reset();
+    } else {
+      router.push("/learning");
+    }
+  };
 
   return (
     <div className="size-full flex justify-center items-center">
@@ -39,11 +74,15 @@ const LoginPage = () => {
       >
         <div className="w-1/2 flex justify-start items-center">
           <Image
-            src={"/Gnome.png"}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            src={isHovered ? "/Gnome.png" : "/Gnome_hover.png"}
             alt="Gnome"
             width={500}
             height={500}
+            className="transition-all duration-100"
           ></Image>
+          <div className=""></div>
         </div>
         <div className="flex flex-col justify-center w-1/2">
           <div className="flex flex-col gap-4">

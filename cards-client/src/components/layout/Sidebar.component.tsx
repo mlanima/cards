@@ -1,10 +1,13 @@
-import React from "react";
+"use client";
 import Logo from "@/components/ui/Logo";
 import { TbCardsFilled } from "react-icons/tb";
 import { FaInfo } from "react-icons/fa";
 import Link from "next/link";
 import Button from "@/components/ui/Button.component";
 import { IconType } from "react-icons/lib";
+import { removeToken } from "@/lib/api/auth.service";
+import { useAuthStore } from "@/stores/authStore";
+import { useEffect } from "react";
 
 const navItems = [
   { name: "Learning", href: "/learning", icon: TbCardsFilled },
@@ -21,41 +24,55 @@ const NavItem = ({
   icon: IconType;
 }) => {
   return (
-    <li className="rounded-full text-lg mx-6 hover:bg-stone-700 px-8 py-2 width-full">
-      <Link
-        href={href}
-        className="w-full flex justify-center items-center gap-2 text-2xl"
-      >
+    <li className="rounded-full p-2 text-lg mx-6 hover:bg-stone-700">
+      <Link href={href} className="flex justify-center text-2xl">
         <Icon className="flex text-3xl shrink-0" />
-        <span className="w-0 opacity-0 group-hover:w-full group-hover:opacity-100 transition-all duration-300 ease-in-out">
+        <h2 className="transition-all duration-300 ease-in-out group-hover:w-full group-hover:pl-4 w-0 overflow-hidden">
           {name}
-        </span>
+        </h2>
       </Link>
     </li>
   );
 };
 
 const Sidebar = () => {
-  return (
-    <div className="group flex flex-col bg-stone-800 text-lime-50 w-28 hover:w-72 fixed min-h-full transition-all duration-300 ease-in-out">
-      <Logo className=" justify-center self-center text-lg font-semibold justify-self-start p-6 m-4 w-full" />
-      <nav className="justtify-self-start mt-8 w-full">
-        <ul className="flex flex-col gap-12">
-          {navItems.map((item) => (
-            <NavItem
-              key={item.name}
-              name={item.name}
-              href={item.href}
-              icon={item.icon}
-            ></NavItem>
-          ))}
-        </ul>
-      </nav>
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const logOut = useAuthStore((state) => state.logOut);
 
-      <Button className="mt-auto m-4">
-        <Link href={"/login"}>Login</Link>
-      </Button>
-    </div>
+  useEffect(() => {
+    // This effect will run whenever authState.isLoggedIn changes
+  }, [isLoggedIn]);
+
+  const onButtonClick = () => {
+    if (isLoggedIn) {
+      removeToken();
+      logOut();
+    }
+  };
+
+  return (
+    <aside className="group h-screen bg-stone-800 text-lime-50 w-28 hover:w-72 fixed transition-all duration-300 ease-in-out overflow-hidden">
+      <nav className="flex flex-col justify-between h-full overflow-hidden">
+        <div>
+          <Logo className="text-2xl" height={64} width={64}></Logo>
+          <ul className="flex flex-col gap-12 w-full overflow-hidden">
+            {navItems.map((item) => (
+              <NavItem
+                key={item.name}
+                name={item.name}
+                href={item.href}
+                icon={item.icon}
+              ></NavItem>
+            ))}
+          </ul>
+        </div>
+        <Link href="/login" className="h-16 m-4" onClick={onButtonClick}>
+          <Button className="w-full h-full">
+            {isLoggedIn ? "Log out" : "Log in"}
+          </Button>
+        </Link>
+      </nav>
+    </aside>
   );
 };
 

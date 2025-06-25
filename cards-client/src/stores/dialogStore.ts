@@ -1,4 +1,4 @@
-import { create } from "zustand";
+import { create } from 'zustand';
 
 interface DialogState {
     dialog?: {
@@ -15,10 +15,10 @@ const useDialogStore = create<DialogState>()((set) => ({
         set(() => ({
             dialog: {
                 message: message,
-                isPositive: isPositive
-            }
+                isPositive: isPositive,
+            },
         })),
-    resolve: () => set(() => ({ dialog: undefined }))
+    resolve: () => set(() => ({ dialog: undefined })),
 }));
 
 export type { DialogState };

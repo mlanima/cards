@@ -7,10 +7,10 @@ import Button from '@/components/ui/Button.component';
 import { IconType } from 'react-icons/lib';
 import { removeToken } from '@/lib/api/auth.service';
 import { useAuthStore } from '@/stores/authStore';
-import { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 
 const navItems = [
-    { name: 'Learning', href: '/learning', icon: TbCardsFilled },
+    { name: 'Learning', href: '/decks', icon: TbCardsFilled },
     { name: 'About', href: '#', icon: FaInfo },
 ];
 
@@ -18,16 +18,25 @@ const NavItem = ({
     name,
     href,
     icon: Icon,
+    isActive,
 }: {
     name: string;
     href: string;
     icon: IconType;
+    isActive: boolean;
 }) => {
     return (
-        <li className="rounded-full p-2 text-lg mx-6 hover:bg-stone-700">
-            <Link href={href} className="flex justify-center text-2xl">
-                <Icon className="flex text-3xl shrink-0" />
-                <h2 className="transition-all duration-300 ease-in-out group-hover:w-full group-hover:pl-4 w-0 overflow-hidden">
+        <li
+            className={`rounded-full p-2 text-lg mx-6 flex items-center gap-2 cursor-pointer
+                ${isActive ? 'bg-stone-600 ' : 'hover:bg-stone-700 '}
+            `}
+        >
+            <Link href={href} className="flex items-center text-2xl w-full">
+                <Icon className=" text-3xl shrink-0 grow-1" />
+                <h2
+                    className={`w-0 transition-all duration-300 ease-in-out overflow-hidden
+                    group-hover:w-full group-hover:pl-4 `}
+                >
                     {name}
                 </h2>
             </Link>
@@ -36,12 +45,9 @@ const NavItem = ({
 };
 
 const Sidebar = () => {
+    const pathname = usePathname();
     const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
     const logOut = useAuthStore((state) => state.logOut);
-
-    useEffect(() => {
-        // This effect will run whenever authState.isLoggedIn changes
-    }, [isLoggedIn]);
 
     const onButtonClick = () => {
         if (isLoggedIn) {
@@ -62,7 +68,8 @@ const Sidebar = () => {
                                 name={item.name}
                                 href={item.href}
                                 icon={item.icon}
-                            ></NavItem>
+                                isActive={pathname === item.href}
+                            />
                         ))}
                     </ul>
                 </div>

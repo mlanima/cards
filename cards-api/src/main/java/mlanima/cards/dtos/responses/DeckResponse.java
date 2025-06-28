@@ -9,11 +9,13 @@ import mlanima.cards.core.deck.Deck;
 public class DeckResponse {
     private Long id;
     private String name;
+    private Integer size;
 
     public static DeckResponse build(Deck deck) {
         return DeckResponse.builder()
                 .id(deck.getId())
                 .name(deck.getName())
+                .size(deck.getCards().size())
                 .build();
     }
 }

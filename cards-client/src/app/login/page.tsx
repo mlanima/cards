@@ -42,28 +42,23 @@ const LoginPage = () => {
         console.log('submiting: ' + JSON.stringify(data));
         const submit = isRegistering ? reg : login;
 
-        try {
-            submit(data.email, data.password);
-            if (!isRegistering) {
-                authState.logIn();
-                show("You're logged in!", true);
-            } else {
-                show("You've registered!", true);
-            }
-        } catch (e: unknown) {
-            if (e instanceof Error) {
-                console.log(e.message);
-            } else {
-                console.log(e);
-            }
-        }
-
-        if (isRegistering) {
-            setIsRegistering(false);
-            reset();
-        } else {
-            router.push('/learning');
-        }
+        submit(data.email, data.password)
+            .then(() => {
+                if (isRegistering) {
+                    setIsRegistering(false);
+                    reset();
+                    show("You've registered!", true);
+                } else {
+                    authState.logIn();
+                    router.push('/decks');
+                    authState.logIn();
+                    show("You're logged in!", true);
+                }
+            })
+            .catch((reason: Error) => {
+                console.log(reason);
+                show(reason.message, false);
+            });
     };
 
     return (

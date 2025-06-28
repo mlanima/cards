@@ -8,16 +8,11 @@ import mlanima.cards.core.card.Card;
 import mlanima.cards.core.tag.Tag;
 import mlanima.cards.core.user.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Table(
-        name = "decks",
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = {
-                        "user_id",
-                        "name"
-                })
-        }
+        name = "decks"
 )
 @Entity
 @Data
@@ -45,7 +40,7 @@ public class Deck {
     List<Tag> tags;
 
     @OneToMany
-    List<Card> cards;
+    private List<Card> cards = new ArrayList<>();
 
     public Deck(String name, User user) {
         this.name = name;

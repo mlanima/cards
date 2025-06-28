@@ -1,35 +1,31 @@
-import { getToken } from './auth.service';
+import { withAuth } from './auth.middleware';
+import { Deck } from '@/lib/models/Deck.type'
 
-export interface Deck {
-    id: string;
-    name: string;
-}
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8080';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
+const fetchWithAuth = withAuth(fetch);
 
 export async function getDecks(): Promise<Deck[]> {
-    const res = await fetch(`${API_URL}/decks`, {
+    const res = await fetchWithAuth(`${API_URL}/decks`, {
         method: 'GET',
     });
-    if (!res.ok) throw new Error('Failed to fetch decks');
+    if (!res.ok) throw new Error('Failed to fetchWithAuth decks');
     return res.json();
 }
 
-export async function getDeck(deckId: string): Promise<Deck> {
-    const res = await fetch(`${API_URL}/decks/${deckId}`, {
+export async function getDeck(deckId: number): Promise<Deck> {
+    const res = await fetchWithAuth(`${API_URL}/decks/${deckId}`, {
         method: 'GET',
     });
-    if (!res.ok) throw new Error('Failed to fetch deck');
+    if (!res.ok) throw new Error('Failed to fetchWithAuth deck');
     return res.json();
 }
 
-export async function createDeck(name: string): Promise<Deck> {
-    const token = getToken();
-    const res = await fetch(`${API_URL}/decks`, {
+export async function createDeck(name: string): Promise<Deck> {;
+    const res = await fetchWithAuth(`${API_URL}/decks`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ name }),
     });
@@ -37,13 +33,11 @@ export async function createDeck(name: string): Promise<Deck> {
     return res.json();
 }
 
-export async function updateDeck(deckId: string, name: string): Promise<Deck> {
-    const token = getToken();
-    const res = await fetch(`${API_URL}/decks/${deckId}`, {
+export async function updateDeck(deckId: number, name: string): Promise<Deck> {
+    const res = await fetchWithAuth(`${API_URL}/decks/${deckId}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ name }),
     });
@@ -51,12 +45,10 @@ export async function updateDeck(deckId: string, name: string): Promise<Deck> {
     return res.json();
 }
 
-export async function deleteDeck(deckId: string): Promise<void> {
-    const token = getToken();
-    const res = await fetch(`${API_URL}/decks/${deckId}`, {
+export async function deleteDeck(deckId: number): Promise<void> {
+    const res = await fetchWithAuth(`${API_URL}/decks/${deckId}`, {
         method: 'DELETE',
         headers: {
-            Authorization: `Bearer ${token}`,
         },
     });
     if (!res.ok) throw new Error('Failed to delete deck');

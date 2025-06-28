@@ -1,5 +1,6 @@
 package mlanima.cards.security.jwts;
 
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import lombok.Getter;
@@ -44,7 +45,12 @@ public class JwtProvider {
     }
 
     public Boolean validateToken(String token) {
-        return getJwtVerifier().isSigned(token);
+        try {
+            getJwtVerifier().parseSignedClaims(token); // не isSigned!
+            return true;
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
     }
 
     public String getUsernameFromToken(String token) {

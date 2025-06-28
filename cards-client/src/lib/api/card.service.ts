@@ -1,38 +1,37 @@
-import { getToken } from './auth.service';
+import { withAuth } from './auth.middleware';
 
 export interface Card {
-    id: string;
-    word: string;
+    id: number;
+    phrase: string;
     translation: string;
 }
 
+
+const fetchWithAuth = withAuth(fetch);
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
 
-export async function getCards(deckId: string): Promise<Card[]> {
-    const token = getToken();
-    const res = await fetch(`${API_URL}/decks/${deckId}/cards`, {
+export async function getCards(deckId: number): Promise<Card[]> {
+    const res = await fetchWithAuth(`${API_URL}/decks/${deckId}/cards`, {
         method: 'GET',
         headers: {
-            Authorization: `Bearer ${token}`,
         },
     });
-    if (!res.ok) throw new Error('Failed to fetch cards');
+    if (!res.ok) throw new Error('Failed to fetchWithAuth cards');
     return res.json();
 }
 
 export async function addCard(
-    deckId: string,
-    word: string,
+    deckId: number,
+    phrase: string,
     translation: string
 ): Promise<Card> {
-    const token = getToken();
-    const res = await fetch(`${API_URL}/decks/${deckId}/cards`, {
+    const res = await fetchWithAuth(`${API_URL}/decks/${deckId}/cards`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ word, translation }),
+        body: JSON.stringify({ phrase, translation }),
     });
     if (!res.ok) throw new Error('Failed to add card');
     return res.json();

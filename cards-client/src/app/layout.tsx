@@ -4,6 +4,7 @@ import './globals.css';
 import Sidebar from '@/components/layout/Sidebar.component';
 import { useDialogStore } from '@/stores/dialogStore';
 import Dialog from '@/components/ui/Dialog.component';
+import { HeroUIProvider } from '@heroui/react';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -24,7 +25,7 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body
-                className={`flex min-h-screen h-auto bg-lime-50 text-black
+                className={`flex min-h-screen h-auto bg-white text-black
                     ${geistSans.variable} ${geistMono.variable} antialiased overflow-auto`}
             >
                 {dialogState.dialog && (
@@ -33,7 +34,7 @@ export default function RootLayout({
                         isPositive={dialogState.dialog.isPositive}
                     />
                 )}
-                <Sidebar />
+                <Sidebar />^
                 <div className="pl-28 min-h-screen w-full">{children}</div>
             </body>
         </html>

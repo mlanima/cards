@@ -1,4 +1,4 @@
-import { Card } from '@/lib/api/card.service';
+import { Card} from '@/lib/api/card.service';
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 

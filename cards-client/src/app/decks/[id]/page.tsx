@@ -10,6 +10,7 @@ import { Card, getCards } from '@/lib/api/card.service';
 import CardsList from './CardsList.component';
 import ChangeCardButton from './ChangeCardButton.component';
 import { Input } from '@headlessui/react';
+import ScrollButton from './ScrollButton.component';
 
 function Cards() {
     const params = useParams();
@@ -44,6 +45,9 @@ function Cards() {
     }, [id]);
 
     const [cardIndex, setCardIndex] = useState<number>(0);
+    const [swipeDirection, setSwipeDirection] = useState<'left' | 'right'>(
+        'right'
+    );
 
     const [searchInput, setSearchInput] = useState('');
 
@@ -51,22 +55,30 @@ function Cards() {
         setSearchInput(e.target.value);
     };
 
+    const handleChangeCard = (direction: 'left' | 'right') => {
+        setSwipeDirection(direction);
+        setCardIndex((prev) => {
+            if (direction === 'left') return Math.max(prev - 1, 0);
+            if (direction === 'right')
+                return Math.min(prev + 1, cards.length - 1);
+            return prev;
+        });
+    };
+
     return (
         <div className="h-full">
+            <header className="flex p-6 border-b border-gray-200 justify-center w-full">
+                <div className="container flex justify-between">
+                    <h1 className="text-4xl font-bold mb-4">Deck #{id}</h1>
+                    <Button onClick={() => setIsAdding(true)}>Add Card</Button>
+                </div>
+            </header>
             <section className="flex flex-col h-screen w-full">
-                <header className="flex p-6 border-b border-gray-200 justify-center w-full">
-                    <div className="container flex justify-between">
-                        <h1 className="text-4xl font-bold mb-4">Deck #{id}</h1>
-                        <Button onClick={() => setIsAdding(true)}>
-                            Add Card
-                        </Button>
-                    </div>
-                </header>
                 <div className="flex flex-grow justify-center">
                     <div className="container p-6 flex justify-between items-center h-full">
                         <ChangeCardButton
                             direction="l"
-                            changeCardIndex={setCardIndex}
+                            changeCardIndex={() => handleChangeCard('left')}
                             isDisabled={cardIndex === 0}
                         />
                         {cards.at(cardIndex) !== undefined ? (
@@ -74,21 +86,21 @@ function Cards() {
                                 id={cards.at(cardIndex)!.id}
                                 phrase={cards.at(cardIndex)!.phrase}
                                 translation={cards.at(cardIndex)!.translation}
+                                swipeDirection={swipeDirection}
+                                key={cards.at(cardIndex)!.id}
                             />
                         ) : (
                             <div>No cards</div>
                         )}
                         <ChangeCardButton
                             direction="r"
-                            changeCardIndex={setCardIndex}
+                            changeCardIndex={() => handleChangeCard('right')}
                             isDisabled={cardIndex === cards.length - 1}
                         />
                     </div>
                 </div>
                 <div className="flex justify-center m-8">
-                    <div className="container">
-                        <h2 className="text-2xl text-center">To all cards</h2>
-                    </div>
+                    <ScrollButton />
                 </div>
             </section>
 
@@ -102,10 +114,12 @@ function Cards() {
                     />
                     <div className="w-full">
                         <CardsList
+                            deckId={id}
                             filter={searchInput}
                             loading={loading}
                             error={error}
                             cards={cards}
+                            setCards={setCards}
                         ></CardsList>
                     </div>
                 </div>

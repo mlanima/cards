@@ -31,10 +31,10 @@ public class CardService {
         );
     }
 
-    public Card getCardByDeckAndId(Long deckName, Long cardId) {
-        return cardRepository.findByUserIdAndDeckNameAndId(
+    public Card getCardByDeckAndId(Long deckId, Long cardId) {
+        return cardRepository.findByUserIdAndDeckIdAndId(
                 userService.getUser().getId(),
-                deckName,
+                deckId,
                 cardId
         ).orElseThrow(CardNotFoundException::new);
     }
@@ -56,7 +56,7 @@ public class CardService {
     public void deleteCard(Long deckId, Long cardId) {
         Card card = getCardByDeckAndId(deckId, cardId);
 
-        cardRepository.deleteById(cardId);
+        cardRepository.deleteById(card.getId());
     }
 
     public Card updateCard(Long deckId, Long cardId, CardRequest dto) {

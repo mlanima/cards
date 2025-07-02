@@ -57,7 +57,7 @@ const Sidebar = () => {
     };
 
     return (
-        <aside className="group h-screen bg-stone-800 text-lime-50 w-28 hover:w-72 fixed transition-all duration-300 ease-in-out overflow-hidden">
+        <aside className="group h-screen bg-stone-800 text-lime-50 w-28 hover:w-72 fixed transition-all duration-300 ease-in-out overflow-hidden z-50">
             <nav className="flex flex-col justify-between h-full overflow-hidden">
                 <div>
                     <Logo className="text-2xl" height={64} width={64}></Logo>

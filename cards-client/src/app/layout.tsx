@@ -4,7 +4,6 @@ import './globals.css';
 import Sidebar from '@/components/layout/Sidebar.component';
 import { useDialogStore } from '@/stores/dialogStore';
 import Dialog from '@/components/ui/Dialog.component';
-import { HeroUIProvider } from '@heroui/react';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -25,7 +24,7 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body
-                className={`flex min-h-screen h-auto bg-white text-black
+                className={`flex min-h-screen h-auto bg-lime-50 text-black
                     ${geistSans.variable} ${geistMono.variable} antialiased overflow-auto`}
             >
                 {dialogState.dialog && (

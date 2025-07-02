@@ -36,3 +36,11 @@ export async function addCard(
     if (!res.ok) throw new Error('Failed to add card');
     return res.json();
 }
+
+export async function deleteCard(deckId: number, cardId: number): Promise<void> {
+    const res = await fetchWithAuth(`${API_URL}/decks/${deckId}/cards/${cardId}`, {
+        method: 'DELETE',
+        headers: {},
+    });
+    if (!res.ok) throw new Error('Failed to delete card');
+}
